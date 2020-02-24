@@ -1,32 +1,51 @@
 import express = require('express');
 import dotenv =  require('dotenv');
 import path = require('path');
-//routes
-import homeR = require('./routes/home.routes');
-
-interface MessageJson{
-    text : string;
-}
-
+import cors = require('cors');
+import bodyParser = require('body-parser');
 const app : express.Application = express();
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended : true}));
 app.use(express.json());
 
+//###################################
+//##    Enable Cors                ##
+//###################################
+app.use(cors());
+
+//###################################
+//##    Set Environment            ##
+//###################################
 dotenv.config({
     path : path.resolve(__dirname,`../.env.${process.env.NODE_ENV}`)
 });
 
+//###################################
+//##    Connection to Database     ##
+//###################################
+const db = require('./configs/database.config');
+db.authenticate().then(() => {
+    console.log('Connection has been established successfully');
+})
+.catch((err:any) => {
+    console.error('Unable to connect to the database:', err);
+});
 
+
+//###################################
+//##    Import Routes              ##
+//###################################
+import homeR = require('./routes/home.routes');
+
+//###################################
+//##    Registers Routes           ##
+//###################################
 homeR.register(app);
 
-// app.get('', (req, res) => {
-
-//     let message : MessageJson = {
-//         text : 'HOLAA!'
-//     };
-//     res.json(message);
-// });
-
+//###################################
+//##    Set PORT                   ##
+//###################################
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
