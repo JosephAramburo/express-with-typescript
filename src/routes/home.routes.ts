@@ -1,6 +1,10 @@
 import express = require('express');
-const controller = require('../controllers/home.controller');
+import { HomeC } from '../controllers/home.controller';
+// const controller = require('../controllers/home.controller');
 
 export const register = (app : express.Application) => {
-    app.get('/', controller.home);
+    const homeC : HomeC = new HomeC();
+
+    app.get('/', homeC.get);
+    app.get('/:id', homeC.getById);
 };

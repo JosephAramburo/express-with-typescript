@@ -29,19 +29,21 @@ db.authenticate().then(() => {
     console.log('Connection has been established successfully');
 })
 .catch((err:any) => {
-    console.error('Unable to connect to the database:', err);
+      console.error('Unable to connect to the database');
 });
 
 
 //###################################
 //##    Import Routes              ##
 //###################################
-import homeR = require('./routes/home.routes');
+import homeR    = require('./routes/home.routes');
+import empresaR = require('./routes/empresa.route');
 
 //###################################
 //##    Registers Routes           ##
 //###################################
 homeR.register(app);
+empresaR.register(app);
 
 //###################################
 //##    Set PORT                   ##
