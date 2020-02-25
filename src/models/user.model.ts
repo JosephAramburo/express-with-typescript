@@ -1,7 +1,7 @@
 // const sequelize = require('sequelize');
 import { DataTypes, Sequelize, Model, Options  } from 'sequelize';
 const sequelize = require('../configs/database.config');
-// import db = require('../configs/database.config');
+const db = require('../configs/database.config');
 
 class UserModel extends Model {}
 

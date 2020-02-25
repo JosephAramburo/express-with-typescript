@@ -1,8 +1,8 @@
-import express = require('express');
-import dotenv =  require('dotenv');
-import path = require('path');
-import cors = require('cors');
-import bodyParser = require('body-parser');
+import express                  = require('express');
+import dotenv                   = require('dotenv');
+import path                     = require('path');
+import cors                     = require('cors');
+import bodyParser               = require('body-parser');
 const app : express.Application = express();
 
 app.use(bodyParser.json());
@@ -32,18 +32,25 @@ db.authenticate().then(() => {
       console.error('Unable to connect to the database');
 });
 
-
 //###################################
 //##    Import Routes              ##
 //###################################
 import homeR    = require('./routes/home.routes');
-import empresaR = require('./routes/empresa.route');
+const empresaR = require('./routes/empresa.route');
 
 //###################################
 //##    Registers Routes           ##
 //###################################
 homeR.register(app);
-empresaR.register(app);
+// empresaR.register(app);
+app.use('/empresa',empresaR);
+
+//###################################
+//##    Catch 404                   ##
+//###################################
+app.use(function(req, res , next) {
+    return res.status(404).json({ message: "Recurso no encontrado" });
+});
 
 //###################################
 //##    Set PORT                   ##
